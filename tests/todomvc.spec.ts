@@ -80,8 +80,8 @@ test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
     await checkboxList.last().click();
     
     const filters = page.locator('.filters li');
-    const activeFilter = filters.nth(1); //TODO: Change this filter to get by name
-    await activeFilter.click();
+    const activefilter = page.locator('.filters li a', { hasText: 'Active' });
+    await activefilter.click();
 
     await expect(checkboxList).toHaveCount(2);
     
