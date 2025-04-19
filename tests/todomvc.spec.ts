@@ -62,6 +62,29 @@ test('TodoMVC - Create multiple Tasks, Complete', async ({ page }) => {
     await expect(checkboxList.last()).toBeChecked();
 });
 
+test('TodoMVC - Create multiple Tasks, Complete Second One', async ({ page }) => {
+    await page.goto('https://demo.playwright.dev/todomvc/');
+
+    const inputAddTask = page.locator('.new-todo');
+
+    const firstTaskText = 'Mi Primer Tarea';
+    const secondTaskText = 'Mi Segunda Tarea';
+    const thirdTaskText = 'Mi Tercera Tarea';
+
+    await addTask(inputAddTask, firstTaskText);
+    await addTask(inputAddTask, secondTaskText);
+    await addTask(inputAddTask, thirdTaskText);
+
+    const views = page.locator('ul.todo-list li .view');
+
+    const viewSecondTask = views.filter({ hasText: secondTaskText });
+    const checkboxSecondTask = viewSecondTask.locator('input[type="checkbox"]');
+    await checkboxSecondTask.click();
+
+    await expect(checkboxSecondTask).toBeChecked();
+    //TODO: Add expect to check that the other checkboxes are not checked
+});
+
 test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
     await page.goto('https://demo.playwright.dev/todomvc/');
 
