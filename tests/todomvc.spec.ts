@@ -77,12 +77,16 @@ test('TodoMVC - Create multiple Tasks, Complete Second One', async ({ page }) =>
 
     const views = page.locator('ul.todo-list li .view');
 
-    const viewSecondTask = views.filter({ hasText: secondTaskText });
-    const checkboxSecondTask = viewSecondTask.locator('input[type="checkbox"]');
+    const checkboxSecondTask = await getCheckboxByTaskName(views, secondTaskText);
     await checkboxSecondTask.click();
 
+    const checkboxThirdTask = await getCheckboxByTaskName(views, thirdTaskText);
+
+    const checkboxFirstTask = await getCheckboxByTaskName(views, firstTaskText);
+    
     await expect(checkboxSecondTask).toBeChecked();
-    //TODO: Add expect to check that the other checkboxes are not checked
+    await expect(checkboxThirdTask).not.toBeChecked();
+    await expect(checkboxFirstTask).not.toBeChecked();
 });
 
 test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
@@ -114,4 +118,10 @@ test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
 async function addTask(input: Locator, text: string) {
     await input.fill(text);
     await input.press('Enter');
+}
+
+async function getCheckboxByTaskName(views: Locator, taskName: string) {
+    const viewTask = views.filter({ hasText: taskName });
+    const checkbox = viewTask.locator('input[type="checkbox"]');
+    return checkbox;
 }
