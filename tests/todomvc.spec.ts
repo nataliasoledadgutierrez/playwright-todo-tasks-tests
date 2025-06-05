@@ -62,6 +62,33 @@ test('TodoMVC - Create multiple Tasks, Complete', async ({ page }) => {
     await expect(checkboxList.last()).toBeChecked();
 });
 
+test('TodoMVC - Create multiple Tasks, Complete Second One', async ({ page }) => {
+    await page.goto('https://demo.playwright.dev/todomvc/');
+
+    const inputAddTask = page.locator('.new-todo');
+
+    const firstTaskText = 'Mi Primer Tarea';
+    const secondTaskText = 'Mi Segunda Tarea';
+    const thirdTaskText = 'Mi Tercera Tarea';
+
+    await addTask(inputAddTask, firstTaskText);
+    await addTask(inputAddTask, secondTaskText);
+    await addTask(inputAddTask, thirdTaskText);
+
+    const views = page.locator('ul.todo-list li .view');
+
+    const checkboxSecondTask = await getCheckboxByTaskName(views, secondTaskText);
+    await checkboxSecondTask.click();
+
+    const checkboxThirdTask = await getCheckboxByTaskName(views, thirdTaskText);
+
+    const checkboxFirstTask = await getCheckboxByTaskName(views, firstTaskText);
+    
+    await expect(checkboxSecondTask).toBeChecked();
+    await expect(checkboxThirdTask).not.toBeChecked();
+    await expect(checkboxFirstTask).not.toBeChecked();
+});
+
 test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
     await page.goto('https://demo.playwright.dev/todomvc/');
 
@@ -79,16 +106,22 @@ test('TodoMVC - Create multiple Tasks, Complete & Filter', async ({ page }) => {
     
     await checkboxList.last().click();
     
-    const filters = page.locator('.filters li');
-    const activefilter = page.locator('.filters li a', { hasText: 'Active' });
+    const filters = page.locator('.filters');
+    const activefilter = filters.getByRole('link', { name: 'Active' });
+
     await activefilter.click();
 
     await expect(checkboxList).toHaveCount(2);
-    
 });
 
 
 async function addTask(input: Locator, text: string) {
     await input.fill(text);
     await input.press('Enter');
+}
+
+async function getCheckboxByTaskName(views: Locator, taskName: string) {
+    const viewTask = views.filter({ hasText: taskName });
+    const checkbox = viewTask.locator('input[type="checkbox"]');
+    return checkbox;
 }
