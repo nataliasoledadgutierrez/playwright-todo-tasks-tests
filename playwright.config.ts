@@ -27,7 +27,12 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
+    baseURL: 'https://opencart.abstracta.us/',
+    headless: true, // Cambiá a false si querés ver el navegador
+    //screenshot: 'only-on-failure', guarda screenshot solo si falla el test
+    screenshot: 'on', // Guarda screenshot de todos los tests
+    //video: 'retain-on-failure', solo si falla el test
+    video: 'on', // Graba video de todos los tests
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
