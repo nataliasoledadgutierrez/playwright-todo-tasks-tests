@@ -23,9 +23,9 @@ test('test input placeholder', async ({ page }) => {
 });
 
 test('test click MacBook', async ({ page }) => {
-    await page.goto('https://opencart.abstracta.us/'); // Ir al sitio
+ await page.goto('https://opencart.abstracta.us/'); // Ir al sitio
   
-    // Llenar el campo de búsqueda usando el placeholder
-    await page.getByText('MacBook').click(); // Hacer clic en el link "MacBook" 
-    await page.pause(); // Pausar para ver el resultado
+ // Llenar el campo de búsqueda usando el placeholder
+ await page.getByText('MacBook').click(); // Hacer clic en el link "MacBook" 
+ await page.pause(); // Pausar para ver el resultado
 });
