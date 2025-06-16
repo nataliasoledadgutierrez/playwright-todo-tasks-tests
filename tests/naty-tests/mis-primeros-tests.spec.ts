@@ -14,4 +14,9 @@ test ('Agregar nueva tarea', async ({page}) => {
     //4.Agregar tarea
     await inputNuevaTarea.press('Enter')
     
+      //6. Verificar tarea agregada.
+    const tareaAgregada= page.locator('.todo-list li', { hasText:'Productos de limpieza'});
+
+    //7. Verificar que la tarea se haya agregado correctamente
+    await expect(tareaAgregada).toBeVisible();
 });
