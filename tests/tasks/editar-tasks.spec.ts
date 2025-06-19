@@ -1,17 +1,22 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.goto('https://demo.playwright.dev/todomvc/#/');
+});
+
 test('Editar tarea existente', async ({ page}) => {
-    //1. Ir a la página
-    await page.goto('https://demo.playwright.dev/todomvc/#/');
-    //2. Agregar una tarea
+   
+    //1. Agregar una tarea
     const inputNuevaTarea = page.locator('.new-todo');
-    //3.Escribir nueva tarea
+    //2. Escribir nueva tarea
     await inputNuevaTarea. fill('Tarea para editar');
-    //4. Agregar tarea
+    //3. Agregar tarea
     await inputNuevaTarea.press('Enter')
+    
     //4. Verificar que la tarea se haya agregado correctamente
     const tarea = page.locator('.todo-list li', {hasText: 'Tarea para editar'});
     await expect(tarea).toBeVisible();
+    
     //5.Hacer doble click para editar la tarea
     await tarea.dblclick();
     //6. Seleccionar el campo de edición
@@ -20,6 +25,7 @@ test('Editar tarea existente', async ({ page}) => {
     await inputEdicion.fill('Tarea editada');
     //8. Presionar enter patra guardar los cambios
     await inputEdicion.press('Enter');
+    
     //9. Verificar que la taraea se haya editado correctamente
     const tareaEditada = page.locator('.todo-list li', { hasText: 'Tarea editada' });
     await expect(tareaEditada).toBeVisible();
